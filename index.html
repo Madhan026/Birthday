@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background-color: #000;
+      overflow-x: hidden;
+      overflow-y: auto;
+      color: #fff;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 3rem;
+      color: #ffeb3b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+    p {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    #gift, #messageSection, #countdownSection {
+      display: none;
+      margin-top: 30px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .gift-btn, .submit-btn {
+      margin-top: 20px;
+      background-color: #ff4081;
+      border: none;
+      padding: 15px 30px;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .gift-btn:hover, .submit-btn:hover {
+      background-color: #e73370;
+    }
+    input {
+      padding: 10px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 2px solid #ff4081;
+      width: 250px;
+      margin-top: 20px;
+    }
+    img, video {
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      animation: popIn 0.8s ease-out;
+    }
+    .gift-photo-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      justify-items: center;
+    }
+    .gift-photo-section figure {
+      margin: 0;
+      color: #fff;
+    }
+    .gift-photo-section img.photo {
+      max-width: 100%;
+      border: 3px solid #fff;
+      transition: transform 0.3s;
+    }
+    .gift-photo-section img.photo:hover {
+      transform: scale(1.05);
+    }
+    .gift-photo-section figcaption {
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+    }
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: floatUp 6s infinite;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    #countdown {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    #shareLink {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #ffffff;
+      word-break: break-all;
+    }
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      border-right: .15em solid orange;
+      white-space: nowrap;
+      animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: orange; }
+    }
+  </style>
+</head>
+<body>
+
+  <audio autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+
+  <h1 class="typewriter">🎉 Happy Birthday! 🎂</h1>
+  <p>Please enter your name to receive your surprise!</p>
+
+  <input type="text" id="nameInput" placeholder="Enter your name here" />
+  <br>
+  <button class="submit-btn" onclick="showMessage()">Submit</button>
+
+  <div id="messageSection">
+    <h1 id="birthdayMessage"></h1>
+    <p>Wishing you a day filled with happiness, laughter, and love. May your special day be as amazing as you are!</p>
+    <button class="gift-btn" onclick="startCountdown()">Start Countdown to Your Gift 🎁</button>
+  </div>
+
+  <div id="countdownSection">
+    <p id="countdown">Gift will open in 5 seconds...</p>
+  </div>
+
+  <div id="gift">
+    <p>Here’s your surprise gift — with lots of love!</p>
+    <div class="gift-photo-section">
+      <figure>
+        <img class="photo" src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Birthday Gift">
+        <figcaption>Animated Surprise</figcaption>
+      </figure>
+      <figure>
+        <img class="photo" src="https://i.imgur.com/1Q9Z1ZQ.jpg" alt="Photo 1">
+        <figcaption>Happy Memories</figcaption>
+      </figure>
+      <figure>
+        <img class="photo" src="https://i.imgur.com/OZ1v5YX.jpg" alt="Photo 2">
+        <figcaption>Fun Times</figcaption>
+      </figure>
+      <figure>
+        <img class="photo" src="https://i.imgur.com/ezwB1sE.jpg" alt="Photo 3">
+        <figcaption>Special Moments</figcaption>
+      </figure>
+    </div>
+    <p>And here's a special memory just for you!</p>
+    <video controls>
+      <source src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p id="shareLink">Share this page: <a href="" id="currentURL" target="_blank"></a></p>
+  </div>
+
+  <script>
+    function showMessage() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (name) {
+        document.getElementById("birthdayMessage").innerText = `🎉 Happy Birthday, ${name}! 🎂`;
+        document.getElementById("messageSection").style.display = "block";
+      } else {
+        alert("Please enter your name.");
+      }
+    }
+
+    function startCountdown() {
+      document.getElementById("countdownSection").style.display = "block";
+      let count = 5;
+      const countdown = document.getElementById("countdown");
+      const interval = setInterval(() => {
+        count--;
+        countdown.innerText = `Gift will open in ${count} seconds...`;
+        if (count === 0) {
+          clearInterval(interval);
+          showGift();
+        }
+      }, 1000);
+    }
+
+    function showGift() {
+      document.getElementById("countdownSection").style.display = "none";
+      document.getElementById("gift").style.display = "block";
+      document.getElementById("currentURL").textContent = window.location.href;
+      document.getElementById("currentURL").href = window.location.href;
+    }
+
+    const confetti = document.getElementById('confetti-canvas');
+    const ctx = confetti.getContext('2d');
+    confetti.width = window.innerWidth;
+    confetti.height = window.innerHeight;
+
+    const pieces = Array.from({ length: 150 }, () => ({
+      x: Math.random() * confetti.width,
+      y: Math.random() * confetti.height - confetti.height,
+      size: Math.random() * 5 + 2,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      speed: Math.random() * 3 + 1
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, confetti.width, confetti.height);
+      for (let piece of pieces) {
+        ctx.beginPath();
+        ctx.arc(piece.x, piece.y, piece.size, 0, 2 * Math.PI);
+        ctx.fillStyle = piece.color;
+        ctx.fill();
+        piece.y += piece.speed;
+        if (piece.y > confetti.height) {
+          piece.y = -piece.size;
+          piece.x = Math.random() * confetti.width;
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }, 300);
+  </script>
+
+</body>
+</html>
